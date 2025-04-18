@@ -349,12 +349,15 @@ function plotAgentStateData(){
 			
    		};
 
-	var myPlot1 = document.getElementById('agentStateDataPlotHolder');
+		
+				
+		var myPlot1 = document.getElementById('agentStateDataPlotHolder');
 			////Plotly.newPlot(myPlot, data, plotLayout,{displayModeBar: false});
 	Plotly.newPlot(myPlot1, traceArray, plotLayout1);
 	
 
 }
+
 
 
 
