@@ -250,6 +250,7 @@ function plotTargetStateData(){
 			traceArray.push(trace);
 		}
 	}
+	window.globalTraceArray = traceArray;
    	// var trace1 = {x:updateStepCountArray, y: costArrayForPlot, 
 				// 	type: 'scatter', line: {shape: 'hv'}, name:'Normal'};
    	
@@ -357,7 +358,23 @@ function plotAgentStateData(){
 	
 
 }
+function downloadCSVAgentState(data, fileName) {
+	let csv='x,y\n';
+	data.forEach(row => {
+		csv += '${row.x},${row.y}\n';
+	})
+	const blob = new Blob([csv], {type: 'text/csv' });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement('a');
+	a.setAttribute('hidden','');
+	a.setAttribute('href', url);
+	a.setAttribute('download', fileName);
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+}
 
 
-
-
+document.getElementById('csv-button').addEventListener('click', function () {
+	downloadCSVAgentState(globalTraceArray, Date.UTC.now());
+});
