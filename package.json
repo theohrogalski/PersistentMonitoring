@@ -1,0 +1,24 @@
+{
+  "name": "persistent-monitoring",
+  "version": "1.0.0",
+  "description": "This PMG uses a decentralized RHC approach to improve upon past solutions for PMG solving (thresholds, offline centralized, etc).",
+  "main": "agent.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node plot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theohrogalski/PersistentMonitoring.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theohrogalski/PersistentMonitoring/issues"
+  },
+  "homepage": "https://github.com/theohrogalski/PersistentMonitoring#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

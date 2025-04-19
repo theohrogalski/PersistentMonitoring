@@ -375,6 +375,14 @@ function downloadCSVAgentState(data, fileName) {
 }
 
 
-document.getElementById('csv-button').addEventListener('click', function () {
+/*document.getElementById('csv-button').addEventListener('click', function () {
 	downloadCSVAgentState(globalTraceArray, Date.UTC.now());
+});*/
+const express = require("express");
+const app = express();
+app.get("/", function (req, res) {
+    res.sendFile(__dirname + "/plot.html");
+});
+app.listen(3000, function () {
+    console.log("Server is running on localhost3000");
 });
