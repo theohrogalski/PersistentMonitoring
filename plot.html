@@ -9,8 +9,6 @@
 
 	<link rel="icon" href="Plots.png">
 	<title>Plots</title>
-
-	<script src="plot.js"></script>
 	
 	<script src="libraries/plotly-latest.min.js"></script>
 	<script src="libraries/fontawesome.js"></script>
@@ -76,16 +74,65 @@
 		</div>
 
 
-
+		<script src="plot.js" defer></script>
 		<div class="row">
 			
 			<div class="col col-lg-2">
 				<button class="btn btn-success" type="button" onclick="plotAgentStateData();">Plot agent state data</button> 
-				<button id="csv-button" class="btn btn-success" type="button" onclick="downloadCSVAgentState();">Download CSV of agent state data</button>
+				<button id="csv-button">Download CSV</button>
+
+<script>
+/*------------- tiny helpers ---------------------------------------------*/
+const readJSON = (key, def = []) => {
+  try { return JSON.parse(localStorage.getItem(key)) ?? def; }
+  catch { return def; }
+};
+
+const saveFile = (text, name) => {
+  const blob = new Blob([text], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  Object.assign(document.createElement('a'), { href: url, download: name }).click();
+  URL.revokeObjectURL(url);
+};
+
+/*------------- CSV builder ----------------------------------------------*/
+function buildUnifiedCSV(times, agentStates) {
+  const header = 'xval,yval,agent#';
+  const rows = [];
+
+  agentStates.forEach((stateArr, agentIdx) => {
+    const checkbox = document.getElementById(`agentSelect${agentIdx}`);    
+
+    stateArr.forEach((y, i) => {                          // i == time index
+      rows.push(`${times[i]},${y},${agentIdx + 1}`);
+    });
+  });
+
+  if (!rows.length) throw new Error('No agents selected (or no data).');
+  return [header, ...rows].join('\r\n');
+}
+
+/*------------- “Download CSV” button ------------------------------------*/
+document.getElementById('csv-button').addEventListener('click', () => {
+  const times       = readJSON('eventTimeData');     // [t0, t1, …]
+  const agentStates = readJSON('agentStateData');    // [[…], […], …]
+
+  if (!times.length || !agentStates.length) {
+    alert('No data in localStorage yet.  Plot something first!');
+    return;
+  }
+
+  try {
+    const csv = buildUnifiedCSV(times, agentStates);
+    saveFile(csv, 'agents.csv');
+  } catch (e) {
+    console.error(e);
+    alert(e.message);
+  }
+});
+</script>
 			</div>
-			<div>
-				<button class="btn btn-success" type="button" onclick=";"> Download CSV</button>
-			</div>
+			
 			<div class="col col-lg-2">
 				<button class="btn btn-primary" type="button" onclick="customizeAgentSelection(1);">Select All</button> 
 				<button class="btn btn-danger" type="button" onclick="customizeAgentSelection(0);">Deselect All</button> 
