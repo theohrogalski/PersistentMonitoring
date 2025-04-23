@@ -186,6 +186,7 @@ function openPlotsPage(){
  var newWindow = window.open('plot.html');
 }
 
+
 function customizeTargetSelection(val){
  var dataString1 = localStorage.getItem('targetStateData');
  var targetStateDataObtained = JSON.parse(dataString1);

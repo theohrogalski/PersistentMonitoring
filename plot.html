@@ -10,6 +10,7 @@
 	<link rel="icon" href="Plots.png">
 	<title>Plots</title>
 	
+	   </script>
 	<script src="libraries/plotly-latest.min.js"></script>
 	<script src="libraries/fontawesome.js"></script>
 
@@ -46,6 +47,13 @@
 			
 			<div class="col col-lg-2">
 				<button class="btn btn-success" type="button" onclick="plotTargetStateData();">Plot target state data</button> 
+				<button class="btn btn-success" onclick="openIndexPage();">Index</button>
+
+	<script>
+	function openIndexPage () {
+		var newWindow = window.open('index.html');
+	   }
+	   </script>
 			</div>
 
 			<div class="col col-lg-2">
@@ -79,7 +87,7 @@
 			
 			<div class="col col-lg-2">
 				<button class="btn btn-success" type="button" onclick="plotAgentStateData();">Plot agent state data</button> 
-				<button id="csv-button">Download CSV</button>
+				<button id="csv-button" class="btn btn-success">Download CSV</button>
 
 <script>
 /*------------- tiny helpers ---------------------------------------------*/
@@ -96,15 +104,19 @@ const saveFile = (text, name) => {
 };
 
 /*------------- CSV builder ----------------------------------------------*/
-function buildUnifiedCSV(times, agentStates) {
-  const header = 'xval,yval,agent#';
+function buildUnifiedCSV(times, agentStates, agentNum) {
+  const header = 'xval,yval,agent1,target1,target2,target3,target4,target5,target6,target7,target8,target9,target10';
   const rows = [];
+//This gives you the state data of the current targets! Super useful.
+  const parsedStateData=readJSON('targetStateData');
 
+  console.log(parsedStateData);
   agentStates.forEach((stateArr, agentIdx) => {
-    const checkbox = document.getElementById(`agentSelect${agentIdx}`);    
-
-    stateArr.forEach((y, i) => {                          // i == time index
-      rows.push(`${times[i]},${y},${agentIdx + 1}`);
+    const checkbox = document.getElementById(`agentSelect${agentNum}`);    
+	let j=0;
+    stateArr.forEach((y, i) => {
+	rows.push(`${times[i]},${y},${agentIdx+1},${parsedStateData[0][i]},${parsedStateData[1][i]},${parsedStateData[2][i]},${parsedStateData[3][i]},${parsedStateData[4][i]},${parsedStateData[5][i]},${parsedStateData[6][i]},${parsedStateData[7][i]},${parsedStateData[8][i]},${parsedStateData[9][i]}`);
+	
     });
   });
 
@@ -124,6 +136,7 @@ document.getElementById('csv-button').addEventListener('click', () => {
 
   try {
     const csv = buildUnifiedCSV(times, agentStates);
+	
     saveFile(csv, 'agents.csv');
   } catch (e) {
     console.error(e);

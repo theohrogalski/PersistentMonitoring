@@ -1539,7 +1539,7 @@ function simulateHybridSystemFast(){ // run the hybrid system for time T period 
 
         
         simulationTime = simulationTime + deltaT;
-        discreteTimeSteps = discreteTimeSteps + 1;
+        discreteTimeSteps++;
         ////print(simulationTime);
 
 
